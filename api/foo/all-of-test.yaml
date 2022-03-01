@@ -1,0 +1,57 @@
+openapi: 3.0.0
+servers: []
+info:
+  description: This is a simple API
+  version: "1.0.4"
+  title: AllOfTest
+  contact:
+    email: you@your-company.com
+  license:
+    name: Apache 2.0
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+paths:
+  /foo:
+    post:
+      responses:
+        "200":
+          description: request ok
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Body"
+components:
+  schemas:
+    Body:
+      type: object
+      additionalProperties: false
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            allOf:
+              - $ref: "#/components/schemas/ItemA"
+              - $ref: "#/components/schemas/ItemB"
+
+    ItemA:
+      type: object
+      additionalProperties: false
+      required:
+        - a
+      properties:
+        a:
+          type: string
+          example: "value-a"
+
+    ItemB:
+      type: object
+      additionalProperties: false
+      required:
+        - b
+      properties:
+        b:
+          type: string
+          example: "value-b"
