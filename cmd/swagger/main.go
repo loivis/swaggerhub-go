@@ -9,6 +9,7 @@ import (
 
 	"github.com/loivis/swaggerhub-go"
 	"github.com/loivis/swaggerhub-go/cmd/swagger/apis"
+	"github.com/loivis/swaggerhub-go/cmd/swagger/domains"
 	"github.com/loivis/swaggerhub-go/cmd/swagger/root"
 	"github.com/peterbourgon/ff/v3/ffcli"
 )
@@ -23,6 +24,7 @@ func main() {
 
 	rootCommand.Subcommands = []*ffcli.Command{
 		apis.New(client),
+		domains.New(client),
 	}
 
 	if err := rootCommand.Parse(os.Args[1:]); err != nil {
