@@ -21,6 +21,9 @@ func New(client *swaggerhub.Client) *ffcli.Command {
 			update(client),
 			setDefault(client),
 			publish(client),
+			listCollaborators(client),
+			updateCollaborators(client),
+			deleteCollaborators(client),
 		},
 		Exec: func(ctx context.Context, args []string) error {
 			return flag.ErrHelp

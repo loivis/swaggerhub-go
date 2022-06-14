@@ -36,12 +36,15 @@ func (c *Client) do(method, u, format string, body io.Reader) (*http.Response, e
 		return nil, err
 	}
 
-	req.Header.Add("Authorization", c.apiKey)
+	req.Header.Set("Authorization", c.apiKey)
+	if method != http.MethodGet {
+		req.Header.Set("Content-Type", contentTypeJSON)
+	}
 	accept := contentTypeJSON
 	if format != "" {
 		accept = "application/" + format
 	}
-	req.Header.Add("Accept", accept)
+	req.Header.Set("Accept", accept)
 
 	return c.hc.Do(req)
 }
