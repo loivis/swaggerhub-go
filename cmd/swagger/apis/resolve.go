@@ -99,12 +99,12 @@ func resolveExec(ctx context.Context, config *resolveConfig) error {
 			}
 
 			b, err := config.client.APIGet(swaggerhub.APIGetParam{
-				Owner:    config.owner,
-				API:      file.Name,
-				Version:  version,
-				Format:   format,
-				Resolved: true,
-				Flatten:  config.flatten,
+				Owner:       config.owner,
+				API:         file.Name,
+				Version:     version,
+				ContentType: swaggerhub.ContentType{Response: "application/" + file.Format},
+				Resolved:    true,
+				Flatten:     config.flatten,
 			})
 			if err != nil {
 				return fmt.Errorf("error fetching %s/%s/%s: %v", config.owner, file.Name, version, err)

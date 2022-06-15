@@ -81,12 +81,12 @@ func updateExec(ctx context.Context, config *updateConfig) error {
 
 		g.Go(func() error {
 			param := swaggerhub.APIPostParam{
-				Owner:              config.owner,
-				API:                file.Name,
-				Version:            version,
-				IsPrivate:          config.isPrivate,
-				RequestContentType: "application/" + file.Format,
-				Body:               file.File,
+				Owner:       config.owner,
+				API:         file.Name,
+				Version:     version,
+				IsPrivate:   config.isPrivate,
+				ContentType: swaggerhub.ContentType{Request: "application/" + file.Format},
+				Body:        file.File,
 			}
 			if err := config.client.APIPost(param); err != nil {
 				return fmt.Errorf("error updating %s/%s/%s: %v", config.owner, file.Name, config.version, err)

@@ -13,13 +13,7 @@ func (c *Client) APIPost(param APIPostParam) error {
 		u += "&version=" + param.Version
 	}
 	log.Printf("request: %s -> %s", http.MethodPost, u)
-	req, err := c.newRequest(http.MethodPost, u, param.Body)
-	if err != nil {
-		return err
-	}
-	req.Header.Add("Content-Type", param.RequestContentType)
-
-	resp, err := c.hc.Do(req)
+	resp, err := c.do(http.MethodPost, u, param.ContentType, param.Body)
 	if err != nil {
 		return err
 	}
@@ -43,10 +37,10 @@ func (c *Client) APIPost(param APIPostParam) error {
 }
 
 type APIPostParam struct {
-	Owner              string
-	API                string
-	Version            string
-	IsPrivate          bool
-	RequestContentType string
-	Body               io.Reader
+	Owner       string
+	API         string
+	Version     string
+	IsPrivate   bool
+	ContentType ContentType
+	Body        io.Reader
 }

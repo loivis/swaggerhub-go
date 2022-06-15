@@ -9,11 +9,10 @@ import (
 )
 
 func (c *Client) APICollaborationPut(param APICollaborationPutParam) error {
-	u := fmt.Sprintf("%s/apis/%s/%s/.collaboration",
-		c.baseURL, param.Owner, param.API)
+	u := fmt.Sprintf("%s/apis/%s/%s/.collaboration", c.baseURL, param.Owner, param.API)
 	log.Printf("request: %s -> %s", http.MethodPut, u)
 	log.Printf("collaboration: %s", param.Body)
-	resp, err := c.do(http.MethodPut, u, "json", bytes.NewReader(param.Body))
+	resp, err := c.do(http.MethodPut, u, ContentType{Request: contentTypeJSON, Response: contentTypeJSON}, bytes.NewReader(param.Body))
 	if err != nil {
 		return err
 	}

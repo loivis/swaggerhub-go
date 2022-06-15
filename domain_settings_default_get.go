@@ -8,7 +8,7 @@ import (
 
 func (c *Client) DomainSettingsDefaultGet(param *DomainSettingsDefaultGetParam) (string, error) {
 	u := fmt.Sprintf("%s/domains/%s/%s/settings/default", c.baseURL, param.Owner, param.Domain)
-	resp, err := c.do(http.MethodGet, u, "", nil)
+	resp, err := c.do(http.MethodGet, u, ContentType{Response: contentTypeJSON}, nil)
 	if err != nil {
 		return "", err
 	}

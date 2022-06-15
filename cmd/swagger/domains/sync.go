@@ -88,10 +88,10 @@ func syncExec(ctx context.Context, config *getConfig) error {
 			}
 
 			b, err := config.client.DomainGet(swaggerhub.DomainGetParam{
-				Owner:   config.owner,
-				Domain:  file.Name,
-				Version: version,
-				Format:  file.Format,
+				Owner:       config.owner,
+				Domain:      file.Name,
+				Version:     version,
+				ContentType: swaggerhub.ContentType{Response: "application/" + file.Format},
 			})
 			if err != nil {
 				return fmt.Errorf("error fetching %s/%s/%s: %v", config.owner, file, version, err)

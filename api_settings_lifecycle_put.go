@@ -18,13 +18,7 @@ func (c *Client) APISettingsLifecyclePut(param APISettingsLifecyclePutParam) err
 		return err
 	}
 	log.Println("request body:", string(b))
-	req, err := c.newRequest(http.MethodPut, u, bytes.NewReader(b))
-	if err != nil {
-		return err
-	}
-	req.Header.Add("Content-Type", contentTypeJSON)
-
-	resp, err := c.hc.Do(req)
+	resp, err := c.do(http.MethodPut, u, ContentType{Request: contentTypeJSON}, bytes.NewReader(b))
 	if err != nil {
 		return err
 	}

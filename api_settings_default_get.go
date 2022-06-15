@@ -8,7 +8,7 @@ import (
 
 func (c *Client) APISettingsDefaultGet(param *APISettingsDefaultGetParam) (string, error) {
 	u := fmt.Sprintf("%s/apis/%s/%s/settings/default", c.baseURL, param.Owner, param.API)
-	resp, err := c.do(http.MethodGet, u, "", nil)
+	resp, err := c.do(http.MethodGet, u, ContentType{Response: contentTypeJSON}, nil)
 	if err != nil {
 		return "", err
 	}

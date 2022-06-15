@@ -19,7 +19,7 @@ func New(baseURL, apiKey string) *Client {
 	}
 }
 
-func (c *Client) newRequest(method, u string, body io.Reader) (*http.Request, error) {
+func (c *Client) newRequest(method, u string, ct ContentType, body io.Reader) (*http.Request, error) {
 	req, err := http.NewRequest(method, u, body)
 	if err != nil {
 		return nil, err
@@ -27,24 +27,22 @@ func (c *Client) newRequest(method, u string, body io.Reader) (*http.Request, er
 
 	req.Header.Add("Authorization", c.apiKey)
 
+	if ct.Request != "" {
+		req.Header.Set("Content-Type", ct.Request)
+	}
+
+	if ct.Response != "" {
+		req.Header.Set("Accept", ct.Response)
+	}
+
 	return req, nil
 }
 
-func (c *Client) do(method, u, format string, body io.Reader) (*http.Response, error) {
-	req, err := http.NewRequest(method, u, body)
+func (c *Client) do(method, u string, ct ContentType, body io.Reader) (*http.Response, error) {
+	req, err := c.newRequest(method, u, ct, body)
 	if err != nil {
 		return nil, err
 	}
-
-	req.Header.Set("Authorization", c.apiKey)
-	if method != http.MethodGet {
-		req.Header.Set("Content-Type", contentTypeJSON)
-	}
-	accept := contentTypeJSON
-	if format != "" {
-		accept = "application/" + format
-	}
-	req.Header.Set("Accept", accept)
 
 	return c.hc.Do(req)
 }
@@ -52,24 +50,6 @@ func (c *Client) do(method, u, format string, body io.Reader) (*http.Response, e
 const (
 	contentTypeJSON = "application/json"
 )
-
-// type APIList struct {
-// 	Name        string
-// 	Description string
-// 	URL         string
-// 	Offset      int
-// 	TotalCount  int
-// 	APIs        []API
-// }
-
-// type API struct {
-// 	Name        string
-// 	Description string
-// 	Tags        []string
-// 	Properties  []APIProperty
-// }
-
-// type APIProperty map[string]string
 
 type version struct {
 	Version string `json:"version"`
@@ -79,6 +59,7 @@ type published struct {
 	Published bool `json:"published"`
 }
 
-// type PublishSettings struct {
-// 	Published bool
-// }
+type ContentType struct {
+	Request  string
+	Response string
+}

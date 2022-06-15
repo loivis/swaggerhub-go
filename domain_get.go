@@ -10,7 +10,7 @@ import (
 func (c *Client) DomainGet(param DomainGetParam) ([]byte, error) {
 	u := fmt.Sprintf("%s/domains/%s/%s/%s", c.baseURL, param.Owner, param.Domain, param.Version)
 	log.Printf("request: %s -> %s", http.MethodGet, u)
-	resp, err := c.do(http.MethodGet, u, param.Format, nil)
+	resp, err := c.do(http.MethodGet, u, param.ContentType, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -29,8 +29,8 @@ func (c *Client) DomainGet(param DomainGetParam) ([]byte, error) {
 }
 
 type DomainGetParam struct {
-	Owner   string
-	Domain  string
-	Version string
-	Format  string
+	Owner       string
+	Domain      string
+	Version     string
+	ContentType ContentType
 }

@@ -12,10 +12,9 @@ func (c *Client) APIGet(param APIGetParam) ([]byte, error) {
 		return nil, fmt.Errorf("use flatten only when resolved set true")
 	}
 
-	u := fmt.Sprintf("%s/apis/%s/%s/%s?resolved=%t&flatten=%t",
-		c.baseURL, param.Owner, param.API, param.Version, param.Resolved, param.Flatten)
+	u := fmt.Sprintf("%s/apis/%s/%s/%s?resolved=%t&flatten=%t", c.baseURL, param.Owner, param.API, param.Version, param.Resolved, param.Flatten)
 	log.Printf("request: %s -> %s", http.MethodGet, u)
-	resp, err := c.do(http.MethodGet, u, param.Format, nil)
+	resp, err := c.do(http.MethodGet, u, ContentType{Response: param.ContentType.Response}, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -42,6 +41,6 @@ type APIGetParam struct {
 	Resolved bool
 	// Used only if resolved=true.
 	// Flattening replaces all complex inline schemas with named entries in the components/schemas or definitions section.
-	Flatten bool
-	Format  string
+	Flatten     bool
+	ContentType ContentType
 }
